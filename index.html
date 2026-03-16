@@ -2,7 +2,10 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
     <title>Bestell-Portal | Vereinsshop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -15,6 +18,11 @@
       }
       .product-card:hover {
         border-color: #3b82f6;
+      }
+      input,
+      select,
+      textarea {
+        font-size: 16px !important;
       }
     </style>
   </head>
@@ -33,9 +41,7 @@
       </header>
 
       <div id="shop-view" class="space-y-10">
-        <section>
-          <div id="product-list" class="grid gap-3"></div>
-        </section>
+        <section><div id="product-list" class="grid gap-3"></div></section>
 
         <section
           class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm"
@@ -48,17 +54,15 @@
               >0</span
             >
           </div>
-
           <ul id="cart-list" class="divide-y divide-slate-100 mb-6">
             <li class="py-4 text-slate-400 text-sm italic text-center">
               Noch keine Artikel ausgewählt
             </li>
           </ul>
-
           <div class="flex justify-between items-center pb-8">
             <span class="text-slate-500">Gesamtsumme</span>
             <span class="text-xl font-bold text-blue-600"
-              ><span id="total-price">0</span> €</span
+              ><span id="total-price">0,00</span> €</span
             >
           </div>
 
@@ -73,14 +77,14 @@
                 id="cust-first-name"
                 required
                 placeholder="Vorname"
-                class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
               />
               <input
                 type="text"
                 id="cust-last-name"
                 required
                 placeholder="Nachname"
-                class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
               />
             </div>
             <input
@@ -88,9 +92,8 @@
               id="cust-email"
               required
               placeholder="E-Mail Adresse"
-              class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+              class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
             />
-
             <div class="pt-2">
               <label
                 class="text-[10px] uppercase tracking-wider font-bold text-slate-400 ml-1"
@@ -101,19 +104,17 @@
                 id="order-password"
                 required
                 placeholder="Bestell-Passwort"
-                class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-red-400 transition-all outline-none"
+                class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-red-400 transition-all outline-none"
               />
             </div>
-
             <div
               id="error-message"
               class="hidden text-red-500 text-xs font-medium bg-red-50 p-4 rounded-xl border border-red-100"
             ></div>
-
             <button
               type="submit"
               id="submit-btn"
-              class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-slate-200 active:scale-[0.98]"
+              class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-4 rounded-2xl transition-all duration-300 shadow-lg active:scale-[0.98]"
             >
               Jetzt bestellen
             </button>
@@ -146,12 +147,10 @@
         <p class="text-slate-500 mt-2">
           Wir haben deine Bestellung erfolgreich aufgenommen.
         </p>
-
         <div
           id="order-summary"
           class="mt-8 p-6 bg-white rounded-3xl border border-slate-100 text-left space-y-3"
         ></div>
-
         <button
           onclick="window.location.reload()"
           class="mt-8 text-sm font-medium text-blue-600 hover:text-blue-700"
@@ -167,56 +166,189 @@
           "https://script.google.com/macros/s/AKfycbxlq6Uhezl8qw7zdtflRjcTPkHER_aX2SCINeaevyoOP2HXT87LoKdzhIQcgsx4hO22/exec",
         produkte: {
           Kapuzenjacke: {
-            Erwachsene: { preis: 25, groessen: ["S", "M", "L", "XL"] },
-            Kinder: { preis: 15, groessen: ["128", "140", "152", "164"] },
+            name: "Kapuzenjacke",
+            variants: {
+              Erwachsene: { preis: 59.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 53.9, groessen: ["128", "140", "152", "164"] },
+            },
           },
           Polyesterjacke: {
-            Erwachsene: { preis: 45, groessen: ["M", "L", "XXL"] },
-            Kinder: { preis: 30, groessen: ["152", "164"] },
+            name: "Polyesterjacke",
+            variants: {
+              Erwachsene: { preis: 49.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 42.9, groessen: ["152", "164"] },
+            },
+          },
+          Allwetterjacke: {
+            name: "Allwetterjacke",
+            variants: {
+              Erwachsene: { preis: 46.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 42.9, groessen: ["128", "140", "152", "164"] },
+            },
+          },
+          Coachjacke: {
+            name: "Coachjacke",
+            variants: {
+              Erwachsene: { preis: 84.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 77.9, groessen: ["128", "140", "152", "164"] },
+            },
+          },
+          Tshirt_weiß: {
+            name: "T-Shirt weiß",
+            variants: {
+              Erwachsene: { preis: 26.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 24.9, groessen: ["128", "140", "152", "164"] },
+            },
+          },
+          Tshirt_dunkel: {
+            name: "T-Shirt dunkel",
+            variants: {
+              Erwachsene: { preis: 38.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 35.9, groessen: ["128", "140", "152", "164"] },
+            },
+          },
+          Freizeithose: {
+            name: "Freizeithose",
+            variants: {
+              Erwachsene: { preis: 36.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 33.9, groessen: ["128", "140", "152", "164"] },
+            },
+          },
+          Polyesterhose: {
+            name: "Polyesterhose",
+            variants: {
+              Erwachsene: { preis: 25.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 21.9, groessen: ["128", "140", "152", "164"] },
+            },
+          },
+          Shorts: {
+            name: "Shorts",
+            variants: {
+              Erwachsene: { preis: 25.9, groessen: ["S", "M", "L", "XL"] },
+              Kinder: { preis: 21.9, groessen: ["128", "140", "152", "164"] },
+            },
+          },
+          Sporttasche: {
+            name: "Sporttasche",
+            variants: {
+              Standard: {
+                preis: 0, // Basispreis 0, da Größen eigene Preise haben
+                groessen: [
+                  { label: "M (60 Liter)", preis: 40.9 },
+                  { label: "L (85 Liter)", preis: 44.9 },
+                ],
+              },
+            },
+          },
+          Rucksack: {
+            name: "Rucksack",
+            variants: {
+              Standard: {
+                preis: 29.5,
+                groessen: ["32 Liter"],
+              },
+            },
+          },
+          Badelatschen: {
+            name: "Badelatschen",
+            variants: {
+              Standard: {
+                preis: 29.5, // Basispreis 0, da Größen eigene Preise haben
+                groessen: [
+                  "36",
+                  "37",
+                  "38",
+                  "39",
+                  "40",
+                  "41",
+                  "42",
+                  "43",
+                  "44",
+                  "45",
+                  "46",
+                  "47",
+                  "48",
+                ],
+              },
+            },
+          },
+          Socken: {
+            name: "Socken",
+            variants: {
+              Standard: {
+                preis: 14.5,
+                groessen: ["37-41", "42-46"],
+              },
+            },
           },
         },
       };
 
       let cart = [];
 
-      const productList = document.getElementById("product-list");
-      for (let pName in CONFIG.produkte) {
-        productList.innerHTML += `
-            <div class="product-card p-5 bg-white border border-slate-100 rounded-2xl flex justify-between items-center transition-all duration-300 group">
-                <div class="flex-1">
-                    <h4 class="font-semibold text-slate-800">${pName}</h4>
-                    <div class="flex gap-2 mt-2">
-                        <select id="type-${pName}" onchange="updateSizes('${pName}')" 
-                            class="text-[11px] font-medium bg-slate-100 border-none rounded-lg px-2 py-1 outline-none cursor-pointer">
-                            <option value="Erwachsene">Erwachsene</option>
-                            <option value="Kinder">Kinder</option>
-                        </select>
-                        <select id="size-${pName}" class="text-[11px] font-medium bg-slate-100 border-none rounded-lg px-2 py-1 outline-none cursor-pointer"></select>
-                    </div>
-                </div>
-                <button onclick="addToCart('${pName}')" 
-                    class="bg-blue-50 text-blue-600 px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-600 hover:text-white transition-colors">
-                    Hinzufügen
-                </button>
-            </div>
-        `;
-        updateSizes(pName);
+      function formatPrice(num) {
+        return num.toLocaleString("de-DE", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
       }
 
-      function updateSizes(pName) {
-        const type = document.getElementById(`type-${pName}`).value;
-        const sizeSelect = document.getElementById(`size-${pName}`);
-        const data = CONFIG.produkte[pName][type];
-        sizeSelect.innerHTML = data.groessen
-          .map((s) => `<option value="${s}">${s} (${data.preis}€)</option>`)
+      const productList = document.getElementById("product-list");
+      for (let key in CONFIG.produkte) {
+        const p = CONFIG.produkte[key];
+        const variantKeys = Object.keys(p.variants);
+        const hideVariantSelect =
+          variantKeys.length === 1 && variantKeys[0] === "Standard";
+
+        productList.innerHTML += `
+            <div class="product-card p-5 bg-white border border-slate-100 rounded-2xl flex justify-between items-center transition-all duration-300">
+                <div class="flex-1">
+                    <h4 class="font-semibold text-slate-800">${p.name}</h4>
+                    <div class="flex gap-2 mt-2">
+                        <select id="type-${key}" onchange="updateSizes('${key}')" 
+                            class="${hideVariantSelect ? "hidden" : ""} font-medium bg-slate-100 border-none rounded-lg px-2 py-1 outline-none cursor-pointer">
+                            ${variantKeys.map((v) => `<option value="${v}">${v}</option>`).join("")}
+                        </select>
+                        <select id="size-${key}" class="font-medium bg-slate-100 border-none rounded-lg px-2 py-1 outline-none cursor-pointer"></select>
+                    </div>
+                </div>
+                <button onclick="addToCart('${key}')" class="bg-blue-50 text-blue-600 px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-600 hover:text-white transition-colors">Hinzufügen</button>
+            </div>
+        `;
+        updateSizes(key);
+      }
+
+      function updateSizes(key) {
+        const type = document.getElementById(`type-${key}`).value;
+        const sizeSelect = document.getElementById(`size-${key}`);
+        const variantData = CONFIG.produkte[key].variants[type];
+
+        sizeSelect.innerHTML = variantData.groessen
+          .map((g, index) => {
+            const isObject = typeof g === "object";
+            const label = isObject ? g.label : g;
+            const preis = isObject ? g.preis : variantData.preis;
+            return `<option value="${index}">${label} - ${formatPrice(preis)} €</option>`;
+          })
           .join("");
       }
 
-      function addToCart(pName) {
-        const type = document.getElementById(`type-${pName}`).value;
-        const size = document.getElementById(`size-${pName}`).value;
-        const preis = CONFIG.produkte[pName][type].preis;
-        cart.push({ id: Date.now(), pName, size, preis });
+      function addToCart(key) {
+        const type = document.getElementById(`type-${key}`).value;
+        const sizeIndex = document.getElementById(`size-${key}`).value;
+        const pData = CONFIG.produkte[key];
+        const variantData = pData.variants[type];
+        const g = variantData.groessen[sizeIndex];
+
+        const sizeLabel = typeof g === "object" ? g.label : g;
+        const preis = typeof g === "object" ? g.preis : variantData.preis;
+
+        cart.push({
+          id: Date.now(),
+          displayName: pData.name,
+          size: sizeLabel,
+          preis,
+        });
         renderCart();
       }
 
@@ -229,33 +361,31 @@
         const list = document.getElementById("cart-list");
         const total = cart.reduce((sum, item) => sum + item.preis, 0);
         document.getElementById("cart-count").innerText = cart.length;
-
         if (cart.length === 0) {
           list.innerHTML = `<li class="py-4 text-slate-400 text-sm italic text-center">Noch keine Artikel ausgewählt</li>`;
         } else {
           list.innerHTML = cart
             .map(
               (item) => `
-                <li class="flex justify-between items-center py-3 animate-in fade-in slide-in-from-right-2 duration-300">
-                    <div>
-                        <p class="text-sm font-medium text-slate-800">${item.pName}</p>
-                        <p class="text-[11px] text-slate-400">${item.size} • ${item.preis} €</p>
-                    </div>
-                    <button onclick="removeFromCart(${item.id})" class="text-slate-300 hover:text-red-500 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </li>
-            `,
+            <li class="flex justify-between items-center py-3 animate-in fade-in slide-in-from-right-2">
+                <div>
+                    <p class="text-sm font-medium text-slate-800">${item.displayName}</p>
+                    <p class="text-[11px] text-slate-400">${item.size} • ${formatPrice(item.preis)} €</p>
+                </div>
+                <button onclick="removeFromCart(${item.id})" class="text-slate-300 hover:text-red-500 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </li>
+          `,
             )
             .join("");
         }
-        document.getElementById("total-price").innerText = total;
+        document.getElementById("total-price").innerText = formatPrice(total);
       }
 
       async function handleCheckout(event) {
         event.preventDefault();
         if (cart.length === 0) return alert("Warenkorb ist leer!");
-
         const errorBox = document.getElementById("error-message");
         const submitBtn = document.getElementById("submit-btn");
         errorBox.classList.add("hidden");
@@ -270,8 +400,9 @@
         };
 
         cart.forEach((item) => {
-          if (!payload.produkte[item.pName]) payload.produkte[item.pName] = [];
-          payload.produkte[item.pName].push(item.size);
+          if (!payload.produkte[item.displayName])
+            payload.produkte[item.displayName] = [];
+          payload.produkte[item.displayName].push(item.size);
         });
 
         submitBtn.disabled = true;
@@ -283,16 +414,11 @@
             body: JSON.stringify(payload),
           });
           const result = await response.json();
-
-          if (result.status === "success") {
-            showSuccess(payload, result.orderId);
-          } else {
-            throw new Error(result.message);
-          }
+          if (result.status === "success") showSuccess(payload, result.orderId);
+          else throw new Error(result.message);
         } catch (e) {
           errorBox.innerText = "Fehler: " + e.message;
           errorBox.classList.remove("hidden");
-          document.getElementById("order-password").value = "";
         } finally {
           submitBtn.disabled = false;
           submitBtn.innerText = "Jetzt bestellen";
@@ -303,7 +429,6 @@
         document.getElementById("shop-view").classList.add("hidden");
         document.getElementById("success-view").classList.remove("hidden");
         window.scrollTo(0, 0);
-
         const summary = document.getElementById("order-summary");
         let itemsHtml = Object.entries(data.produkte)
           .map(
@@ -311,7 +436,6 @@
               `<div class="flex justify-between text-sm"><span>${name}</span> <span class="text-slate-500">${sizes.join(", ")}</span></div>`,
           )
           .join("");
-
         summary.innerHTML = `
             <div class="space-y-1 pb-4 border-b border-slate-100">
                 <p class="text-xs uppercase tracking-wider text-slate-400 font-bold">Besteller</p>
