@@ -20,19 +20,32 @@
       .product-card:hover {
         border-color: #3b82f6;
       }
-      /* Optimierung für mobile Eingabefelder */
       input,
       select,
       textarea {
         font-size: 14px !important;
       }
-      /* Schlankere Scrollbars */
-      ::-webkit-scrollbar {
-        width: 4px;
+
+      /* Animation für den Warenkorb-Badge */
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.4);
+        }
+        100% {
+          transform: scale(1);
+        }
       }
-      ::-webkit-scrollbar-thumb {
-        background: #e2e8f0;
-        border-radius: 10px;
+      .cart-pop {
+        animation: pop 0.3s ease-out;
+      }
+
+      /* Sanfter Übergang für Button-Feedback */
+      .btn-feedback {
+        background-color: #10b981 !important; /* Green-500 */
+        color: white !important;
       }
     </style>
   </head>
@@ -62,7 +75,7 @@
             <span class="text-md font-semibold text-slate-800">Warenkorb</span>
             <span
               id="cart-count"
-              class="bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-bold"
+              class="bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-bold transition-all"
               >0</span
             >
           </div>
@@ -209,15 +222,15 @@
               Kinder: { preis: 77.9, groessen: ["128", "140", "152", "164"] },
             },
           },
-          Tshirt_weiß: {
-            name: "T-Shirt weiß",
+          Trikot_team: {
+            name: "Trikot Team",
             variants: {
               Erwachsene: { preis: 26.9, groessen: ["S", "M", "L", "XL"] },
               Kinder: { preis: 24.9, groessen: ["128", "140", "152", "164"] },
             },
           },
-          Tshirt_dunkel: {
-            name: "T-Shirt dunkel",
+          Tshirt_iconic: {
+            name: "T-Shirt Iconic",
             variants: {
               Erwachsene: { preis: 38.9, groessen: ["S", "M", "L", "XL"] },
               Kinder: { preis: 35.9, groessen: ["128", "140", "152", "164"] },
@@ -258,12 +271,7 @@
           },
           Rucksack: {
             name: "Rucksack",
-            variants: {
-              Standard: {
-                preis: 29.5,
-                groessen: ["32 Liter"],
-              },
-            },
+            variants: { Standard: { preis: 29.5, groessen: ["32 Liter"] } },
           },
           Badelatschen: {
             name: "Badelatschen",
@@ -291,10 +299,7 @@
           Socken: {
             name: "Socken",
             variants: {
-              Standard: {
-                preis: 14.5,
-                groessen: ["37-41", "42-46"],
-              },
+              Standard: { preis: 14.5, groessen: ["37-41", "42-46"] },
             },
           },
         },
@@ -328,7 +333,7 @@
                         <select id="size-${key}" class="text-[11px] font-medium bg-slate-100 border-none rounded px-1.5 py-1 outline-none cursor-pointer"></select>
                     </div>
                 </div>
-                <button onclick="addToCart('${key}')" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-blue-600 hover:text-white transition-colors">Hinzufügen</button>
+                <button id="btn-${key}" onclick="addToCart('${key}')" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-blue-600 hover:text-white transition-all duration-200">Hinzufügen</button>
             </div>
         `;
         updateSizes(key);
@@ -338,7 +343,6 @@
         const type = document.getElementById(`type-${key}`).value;
         const sizeSelect = document.getElementById(`size-${key}`);
         const variantData = CONFIG.produkte[key].variants[type];
-
         sizeSelect.innerHTML = variantData.groessen
           .map((g, index) => {
             const isObject = typeof g === "object";
@@ -355,7 +359,6 @@
         const pData = CONFIG.produkte[key];
         const variantData = pData.variants[type];
         const g = variantData.groessen[sizeIndex];
-
         const sizeLabel = typeof g === "object" ? g.label : g;
         const preis = typeof g === "object" ? g.preis : variantData.preis;
 
@@ -365,7 +368,30 @@
           size: sizeLabel,
           preis,
         });
+
+        // Feedback-Animation Trigger
+        animateButton(key);
         renderCart();
+      }
+
+      function animateButton(key) {
+        const btn = document.getElementById(`btn-${key}`);
+        const countBadge = document.getElementById("cart-count");
+
+        // Button Feedback
+        btn.classList.add("btn-feedback");
+        const originalText = btn.innerText;
+        btn.innerText = "✓";
+
+        // Badge Pop
+        countBadge.classList.remove("cart-pop");
+        void countBadge.offsetWidth; // Reflow trigger
+        countBadge.classList.add("cart-pop");
+
+        setTimeout(() => {
+          btn.classList.remove("btn-feedback");
+          btn.innerText = originalText;
+        }, 800);
       }
 
       function removeFromCart(id) {
@@ -405,7 +431,6 @@
         const errorBox = document.getElementById("error-message");
         const submitBtn = document.getElementById("submit-btn");
         errorBox.classList.add("hidden");
-
         const payload = {
           password: document.getElementById("order-password").value,
           firstName: document.getElementById("cust-first-name").value,
@@ -414,16 +439,13 @@
           total: document.getElementById("total-price").innerText,
           produkte: {},
         };
-
         cart.forEach((item) => {
           if (!payload.produkte[item.displayName])
             payload.produkte[item.displayName] = [];
           payload.produkte[item.displayName].push(item.size);
         });
-
         submitBtn.disabled = true;
         submitBtn.innerText = "Wird gesendet...";
-
         try {
           const response = await fetch(CONFIG.scriptURL, {
             method: "POST",

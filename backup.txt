@@ -15,6 +15,7 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
       .product-card:hover {
         border-color: #3b82f6;
@@ -22,46 +23,74 @@
       input,
       select,
       textarea {
-        font-size: 16px !important;
+        font-size: 14px !important;
+      }
+
+      /* Animation für den Warenkorb-Badge */
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.4);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .cart-pop {
+        animation: pop 0.3s ease-out;
+      }
+
+      /* Sanfter Übergang für Button-Feedback */
+      .btn-feedback {
+        background-color: #10b981 !important; /* Green-500 */
+        color: white !important;
       }
     </style>
   </head>
-  <body class="bg-[#fafafa] text-slate-900 min-h-screen pb-20">
-    <div id="app" class="max-w-xl mx-auto px-6">
-      <header class="pt-16 pb-12 text-center">
-        <div class="mx-auto w-full max-w-md flex justify-center mb-6">
-          <img src="logo.svg" alt="Vereinslogo" class="h-20 w-auto" />
+  <body class="bg-[#fafafa] text-slate-900 min-h-screen pb-10">
+    <div id="app" class="max-w-md mx-auto px-4">
+      <header class="pt-8 pb-6 text-center">
+        <div class="mx-auto w-full flex justify-center mb-4">
+          <img src="logo.svg" alt="Vereinslogo" class="h-14 w-auto" />
         </div>
-        <h1 class="text-2xl font-bold tracking-tight text-slate-900">
-          JSV Kollektion Bestellformular
+        <h1 class="text-xl font-bold tracking-tight text-slate-900">
+          JSV Kollektion
         </h1>
-        <p class="text-slate-500 mt-2 text-sm">
+        <p class="text-slate-500 mt-1 text-xs">
           Wähle deine Produkte und Größen aus
         </p>
       </header>
 
-      <div id="shop-view" class="space-y-10">
-        <section><div id="product-list" class="grid gap-3"></div></section>
+      <div id="shop-view" class="space-y-6">
+        <section>
+          <div id="product-list" class="grid gap-2"></div>
+        </section>
 
         <section
-          class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm"
+          class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm"
         >
-          <div class="flex items-center gap-2 mb-6">
-            <span class="text-lg font-semibold">Warenkorb</span>
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-md font-semibold text-slate-800">Warenkorb</span>
             <span
               id="cart-count"
-              class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full"
+              class="bg-slate-100 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-bold transition-all"
               >0</span
             >
           </div>
-          <ul id="cart-list" class="divide-y divide-slate-100 mb-6">
-            <li class="py-4 text-slate-400 text-sm italic text-center">
+
+          <ul id="cart-list" class="divide-y divide-slate-50 mb-4">
+            <li class="py-3 text-slate-400 text-xs italic text-center">
               Noch keine Artikel ausgewählt
             </li>
           </ul>
-          <div class="flex justify-between items-center pb-8">
-            <span class="text-slate-500">Gesamtsumme</span>
-            <span class="text-xl font-bold text-blue-600"
+
+          <div
+            class="flex justify-between items-center pb-5 border-b border-slate-50 mb-5"
+          >
+            <span class="text-xs text-slate-500 font-medium">Gesamtsumme</span>
+            <span class="text-lg font-bold text-blue-600"
               ><span id="total-price">0,00</span> €</span
             >
           </div>
@@ -69,22 +98,22 @@
           <form
             id="order-form"
             onsubmit="handleCheckout(event)"
-            class="space-y-4"
+            class="space-y-3"
           >
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 gap-2">
               <input
                 type="text"
                 id="cust-first-name"
                 required
                 placeholder="Vorname"
-                class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                class="w-full bg-slate-50 border-none rounded-lg p-2.5 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-sm"
               />
               <input
                 type="text"
                 id="cust-last-name"
                 required
                 placeholder="Nachname"
-                class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                class="w-full bg-slate-50 border-none rounded-lg p-2.5 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-sm"
               />
             </div>
             <input
@@ -92,11 +121,11 @@
               id="cust-email"
               required
               placeholder="E-Mail Adresse"
-              class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+              class="w-full bg-slate-50 border-none rounded-lg p-2.5 focus:ring-1 focus:ring-blue-500 transition-all outline-none text-sm"
             />
-            <div class="pt-2">
+            <div class="pt-1">
               <label
-                class="text-[10px] uppercase tracking-wider font-bold text-slate-400 ml-1"
+                class="text-[9px] uppercase tracking-wider font-bold text-slate-400 ml-1"
                 >Sicherheit</label
               >
               <input
@@ -104,17 +133,17 @@
                 id="order-password"
                 required
                 placeholder="Bestell-Passwort"
-                class="w-full bg-slate-50 border-none rounded-xl p-3 focus:ring-2 focus:ring-red-400 transition-all outline-none"
+                class="w-full bg-slate-50 border-none rounded-lg p-2.5 focus:ring-1 focus:ring-red-400 transition-all outline-none text-sm"
               />
             </div>
             <div
               id="error-message"
-              class="hidden text-red-500 text-xs font-medium bg-red-50 p-4 rounded-xl border border-red-100"
+              class="hidden text-red-500 text-[11px] font-medium bg-red-50 p-3 rounded-lg border border-red-100"
             ></div>
             <button
               type="submit"
               id="submit-btn"
-              class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-4 rounded-2xl transition-all duration-300 shadow-lg active:scale-[0.98]"
+              class="w-full bg-slate-900 hover:bg-black text-white font-semibold py-3.5 rounded-xl text-sm transition-all duration-300 shadow-md active:scale-[0.98]"
             >
               Jetzt bestellen
             </button>
@@ -127,10 +156,10 @@
         class="hidden pt-10 text-center animate-in fade-in zoom-in duration-500"
       >
         <div
-          class="inline-flex items-center justify-center w-20 h-20 bg-green-50 text-green-500 rounded-full mb-6"
+          class="inline-flex items-center justify-center w-16 h-16 bg-green-50 text-green-500 rounded-full mb-4"
         >
           <svg
-            class="w-10 h-10"
+            class="w-8 h-8"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -143,17 +172,17 @@
             ></path>
           </svg>
         </div>
-        <h2 class="text-2xl font-bold text-slate-900">Bestellung erhalten!</h2>
-        <p class="text-slate-500 mt-2">
-          Wir haben deine Bestellung erfolgreich aufgenommen.
+        <h2 class="text-xl font-bold text-slate-900">Bestellung erhalten!</h2>
+        <p class="text-slate-500 mt-1 text-sm">
+          Vielen Dank für deine Bestellung.
         </p>
         <div
           id="order-summary"
-          class="mt-8 p-6 bg-white rounded-3xl border border-slate-100 text-left space-y-3"
+          class="mt-6 p-5 bg-white rounded-2xl border border-slate-100 text-left space-y-2.5"
         ></div>
         <button
           onclick="window.location.reload()"
-          class="mt-8 text-sm font-medium text-blue-600 hover:text-blue-700"
+          class="mt-6 text-xs font-medium text-blue-600 hover:text-blue-700"
         >
           Zurück zum Shop
         </button>
@@ -232,7 +261,7 @@
             name: "Sporttasche",
             variants: {
               Standard: {
-                preis: 0, // Basispreis 0, da Größen eigene Preise haben
+                preis: 0,
                 groessen: [
                   { label: "M (60 Liter)", preis: 40.9 },
                   { label: "L (85 Liter)", preis: 44.9 },
@@ -242,18 +271,13 @@
           },
           Rucksack: {
             name: "Rucksack",
-            variants: {
-              Standard: {
-                preis: 29.5,
-                groessen: ["32 Liter"],
-              },
-            },
+            variants: { Standard: { preis: 29.5, groessen: ["32 Liter"] } },
           },
           Badelatschen: {
             name: "Badelatschen",
             variants: {
               Standard: {
-                preis: 29.5, // Basispreis 0, da Größen eigene Preise haben
+                preis: 29.5,
                 groessen: [
                   "36",
                   "37",
@@ -275,10 +299,7 @@
           Socken: {
             name: "Socken",
             variants: {
-              Standard: {
-                preis: 14.5,
-                groessen: ["37-41", "42-46"],
-              },
+              Standard: { preis: 14.5, groessen: ["37-41", "42-46"] },
             },
           },
         },
@@ -301,18 +322,18 @@
           variantKeys.length === 1 && variantKeys[0] === "Standard";
 
         productList.innerHTML += `
-            <div class="product-card p-5 bg-white border border-slate-100 rounded-2xl flex justify-between items-center transition-all duration-300">
-                <div class="flex-1">
-                    <h4 class="font-semibold text-slate-800">${p.name}</h4>
-                    <div class="flex gap-2 mt-2">
+            <div class="product-card p-3 bg-white border border-slate-100 rounded-xl flex justify-between items-center transition-all">
+                <div class="flex-1 pr-2">
+                    <h4 class="text-xs font-semibold text-slate-800">${p.name}</h4>
+                    <div class="flex gap-1.5 mt-1.5">
                         <select id="type-${key}" onchange="updateSizes('${key}')" 
-                            class="${hideVariantSelect ? "hidden" : ""} font-medium bg-slate-100 border-none rounded-lg px-2 py-1 outline-none cursor-pointer">
+                            class="${hideVariantSelect ? "hidden" : ""} text-[11px] font-medium bg-slate-100 border-none rounded px-1.5 py-1 outline-none cursor-pointer">
                             ${variantKeys.map((v) => `<option value="${v}">${v}</option>`).join("")}
                         </select>
-                        <select id="size-${key}" class="font-medium bg-slate-100 border-none rounded-lg px-2 py-1 outline-none cursor-pointer"></select>
+                        <select id="size-${key}" class="text-[11px] font-medium bg-slate-100 border-none rounded px-1.5 py-1 outline-none cursor-pointer"></select>
                     </div>
                 </div>
-                <button onclick="addToCart('${key}')" class="bg-blue-50 text-blue-600 px-5 py-2 rounded-xl text-sm font-semibold hover:bg-blue-600 hover:text-white transition-colors">Hinzufügen</button>
+                <button id="btn-${key}" onclick="addToCart('${key}')" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-blue-600 hover:text-white transition-all duration-200">Hinzufügen</button>
             </div>
         `;
         updateSizes(key);
@@ -322,7 +343,6 @@
         const type = document.getElementById(`type-${key}`).value;
         const sizeSelect = document.getElementById(`size-${key}`);
         const variantData = CONFIG.produkte[key].variants[type];
-
         sizeSelect.innerHTML = variantData.groessen
           .map((g, index) => {
             const isObject = typeof g === "object";
@@ -339,7 +359,6 @@
         const pData = CONFIG.produkte[key];
         const variantData = pData.variants[type];
         const g = variantData.groessen[sizeIndex];
-
         const sizeLabel = typeof g === "object" ? g.label : g;
         const preis = typeof g === "object" ? g.preis : variantData.preis;
 
@@ -349,7 +368,30 @@
           size: sizeLabel,
           preis,
         });
+
+        // Feedback-Animation Trigger
+        animateButton(key);
         renderCart();
+      }
+
+      function animateButton(key) {
+        const btn = document.getElementById(`btn-${key}`);
+        const countBadge = document.getElementById("cart-count");
+
+        // Button Feedback
+        btn.classList.add("btn-feedback");
+        const originalText = btn.innerText;
+        btn.innerText = "✓";
+
+        // Badge Pop
+        countBadge.classList.remove("cart-pop");
+        void countBadge.offsetWidth; // Reflow trigger
+        countBadge.classList.add("cart-pop");
+
+        setTimeout(() => {
+          btn.classList.remove("btn-feedback");
+          btn.innerText = originalText;
+        }, 800);
       }
 
       function removeFromCart(id) {
@@ -362,18 +404,18 @@
         const total = cart.reduce((sum, item) => sum + item.preis, 0);
         document.getElementById("cart-count").innerText = cart.length;
         if (cart.length === 0) {
-          list.innerHTML = `<li class="py-4 text-slate-400 text-sm italic text-center">Noch keine Artikel ausgewählt</li>`;
+          list.innerHTML = `<li class="py-3 text-slate-400 text-xs italic text-center">Noch keine Artikel ausgewählt</li>`;
         } else {
           list.innerHTML = cart
             .map(
               (item) => `
-            <li class="flex justify-between items-center py-3 animate-in fade-in slide-in-from-right-2">
+            <li class="flex justify-between items-center py-2.5 animate-in fade-in slide-in-from-right-1">
                 <div>
-                    <p class="text-sm font-medium text-slate-800">${item.displayName}</p>
-                    <p class="text-[11px] text-slate-400">${item.size} • ${formatPrice(item.preis)} €</p>
+                    <p class="text-xs font-semibold text-slate-800">${item.displayName}</p>
+                    <p class="text-[10px] text-slate-400 font-medium">${item.size} • ${formatPrice(item.preis)} €</p>
                 </div>
-                <button onclick="removeFromCart(${item.id})" class="text-slate-300 hover:text-red-500 transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button onclick="removeFromCart(${item.id})" class="text-slate-300 hover:text-red-500 p-1 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"></path></svg>
                 </button>
             </li>
           `,
@@ -389,7 +431,6 @@
         const errorBox = document.getElementById("error-message");
         const submitBtn = document.getElementById("submit-btn");
         errorBox.classList.add("hidden");
-
         const payload = {
           password: document.getElementById("order-password").value,
           firstName: document.getElementById("cust-first-name").value,
@@ -398,16 +439,13 @@
           total: document.getElementById("total-price").innerText,
           produkte: {},
         };
-
         cart.forEach((item) => {
           if (!payload.produkte[item.displayName])
             payload.produkte[item.displayName] = [];
           payload.produkte[item.displayName].push(item.size);
         });
-
         submitBtn.disabled = true;
         submitBtn.innerText = "Wird gesendet...";
-
         try {
           const response = await fetch(CONFIG.scriptURL, {
             method: "POST",
@@ -433,26 +471,26 @@
         let itemsHtml = Object.entries(data.produkte)
           .map(
             ([name, sizes]) =>
-              `<div class="flex justify-between text-sm"><span>${name}</span> <span class="text-slate-500">${sizes.join(", ")}</span></div>`,
+              `<div class="flex justify-between text-[13px]"><span>${name}</span> <span class="text-slate-500 text-xs">${sizes.join(", ")}</span></div>`,
           )
           .join("");
         summary.innerHTML = `
-            <div class="space-y-1 pb-4 border-b border-slate-100">
-                <p class="text-xs uppercase tracking-wider text-slate-400 font-bold">Besteller</p>
-                <p class="font-medium">${data.firstName} ${data.lastName}</p>
-                <p class="text-sm text-slate-500">${data.email}</p>
+            <div class="space-y-0.5 pb-3 border-b border-slate-100">
+                <p class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Besteller</p>
+                <p class="text-sm font-semibold">${data.firstName} ${data.lastName}</p>
+                <p class="text-xs text-slate-500">${data.email}</p>
             </div>
-            <div class="space-y-1 pb-4 border-b border-slate-100">
-                <p class="text-xs uppercase tracking-wider text-slate-400 font-bold">Bestell-ID</p>
-                <p class="font-medium">${orderId}</p>
+            <div class="space-y-0.5 pb-3 border-b border-slate-100">
+                <p class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Bestell-ID</p>
+                <p class="text-sm font-semibold">${orderId}</p>
             </div>
-            <div class="space-y-2 pt-2">
-                <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-3">Positionen</p>
+            <div class="space-y-2 pt-1">
+                <p class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mb-2">Positionen</p>
                 ${itemsHtml}
             </div>
-            <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
-                <span class="font-bold">Gesamtbetrag</span>
-                <span class="text-lg font-bold text-blue-600">${data.total} €</span>
+            <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
+                <span class="text-xs font-bold">Gesamtbetrag</span>
+                <span class="text-md font-bold text-blue-600">${data.total} €</span>
             </div>
         `;
       }
