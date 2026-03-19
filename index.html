@@ -495,8 +495,6 @@
           return;
         }
 
-        const jugendSheet = jugendValue.replace(/-/g, "_");
-
         const phoneValue = document.getElementById("cust-phone").value.trim();
 
         const payload = {
@@ -504,8 +502,7 @@
           firstName: document.getElementById("cust-first-name").value,
           lastName: document.getElementById("cust-last-name").value,
           email: emailValue,
-          jugend: jugendSheet,
-          jugendDisplay: jugendValue,
+          jugend: jugendValue,
           total: document.getElementById("total-price").innerText,
           produkte: {},
         };
@@ -557,11 +554,16 @@
                 <p class="text-sm font-semibold">${data.firstName} ${data.lastName}</p>
                 <p class="text-xs text-slate-500">${data.email}</p>
                 ${data.phone ? `<p class="text-xs text-slate-500">Telefon: ${data.phone}</p>` : ""}
-                <p class="text-xs text-slate-500">Jugend: ${data.jugendDisplay || data.jugend}</p>
+                <p class="text-xs text-slate-500">Jugend: ${data.jugend}</p>
             </div>
             <div class="space-y-0.5 pb-3 border-b border-slate-100">
                 <p class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Bestell-ID</p>
-                <p class="text-sm font-semibold">${orderId}</p>
+                <div class="flex items-center justify-between gap-2">
+                    <p class="text-sm font-semibold" id="order-id-text">${orderId}</p>
+                    <button id="copy-order-id" class="text-xs font-semibold text-blue-600 hover:text-white border border-blue-200 hover:border-blue-500 rounded-lg px-2.5 py-1.5 bg-white hover:bg-blue-600 transition-all">
+                      Bestell-ID kopieren
+                    </button>
+                </div>
             </div>
             <div class="space-y-2 pt-1">
                 <p class="text-[9px] uppercase tracking-wider text-slate-400 font-bold mb-2">Positionen</p>
@@ -572,6 +574,22 @@
                 <span class="text-md font-bold text-blue-600">${data.total} €</span>
             </div>
         `;
+
+        const copyBtn = document.getElementById("copy-order-id");
+        if (copyBtn) {
+          copyBtn.addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(orderId);
+              copyBtn.innerText = "Kopiert!";
+              setTimeout(() => {
+                copyBtn.innerText = "Bestell-ID kopieren";
+              }, 1400);
+            } catch (err) {
+              copyBtn.innerText = "Kopieren fehlgeschlagen";
+              console.error("Clipboard write failed", err);
+            }
+          });
+        }
       }
     </script>
   </body>
