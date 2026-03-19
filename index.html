@@ -209,7 +209,7 @@
           class="mt-6 p-5 bg-white rounded-2xl border border-slate-100 text-left space-y-2.5"
         ></div>
         <button
-          onclick="window.location.reload()"
+          id="back-to-shop-btn"
           class="mt-6 text-xs font-medium text-blue-600 hover:text-blue-700"
         >
           Zurück zum Shop
@@ -640,10 +640,16 @@
         }
       }
 
-      function showSuccess(data, orderId) {
+      function showSuccess(data, orderId, fromRestore = false) {
         document.getElementById("shop-view").classList.add("hidden");
         document.getElementById("success-view").classList.remove("hidden");
         window.scrollTo(0, 0);
+        if (!fromRestore) {
+          localStorage.setItem(
+            "orderSummary",
+            JSON.stringify({ data, orderId }),
+          );
+        }
         const summary = document.getElementById("order-summary");
         let itemsHtml = Object.entries(data.produkte)
           .map(
@@ -694,6 +700,37 @@
           });
         }
       }
+
+      function returnToShop() {
+        localStorage.removeItem("orderSummary");
+        document.getElementById("success-view").classList.add("hidden");
+        document.getElementById("shop-view").classList.remove("hidden");
+        cart = [];
+        renderCart();
+        document.getElementById("order-form").reset();
+        window.scrollTo(0, 0);
+      }
+
+      function tryRestoreOrderSummary() {
+        const saved = localStorage.getItem("orderSummary");
+        if (!saved) return;
+
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.data && parsed.orderId) {
+            showSuccess(parsed.data, parsed.orderId, true);
+          }
+        } catch (e) {
+          console.warn("orderSummary invalid", e);
+          localStorage.removeItem("orderSummary");
+        }
+      }
+
+      document
+        .getElementById("back-to-shop-btn")
+        .addEventListener("click", returnToShop);
+
+      tryRestoreOrderSummary();
     </script>
   </body>
 </html>
