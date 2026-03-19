@@ -690,11 +690,18 @@
             try {
               await navigator.clipboard.writeText(orderId);
               copyBtn.innerText = "Kopiert!";
+              copyBtn.classList.add("btn-feedback");
               setTimeout(() => {
+                copyBtn.classList.remove("btn-feedback");
                 copyBtn.innerText = "Bestell-ID kopieren";
               }, 1400);
             } catch (err) {
               copyBtn.innerText = "Kopieren fehlgeschlagen";
+              copyBtn.classList.add("btn-feedback");
+              setTimeout(() => {
+                copyBtn.classList.remove("btn-feedback");
+                copyBtn.innerText = "Bestell-ID kopieren";
+              }, 1400);
               console.error("Clipboard write failed", err);
             }
           });
